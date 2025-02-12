@@ -15,6 +15,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+const user = require("./router/user");
+app.use("/user", user);
+
 mongoose.connect(process.env.MONGODB)
   .then(() => console.log("Connected to MongoDB..."))
   .catch(() => console.log("Failed to connect..."));
