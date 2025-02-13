@@ -18,6 +18,9 @@ app.use(cookieParser());
 const user = require("./router/user");
 app.use("/user", user);
 
+const note = require("./router/note");
+app.use("/note", note);
+
 mongoose.connect(process.env.MONGODB)
   .then(() => console.log("Connected to MongoDB..."))
   .catch(() => console.log("Failed to connect..."));
