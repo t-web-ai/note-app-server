@@ -36,4 +36,34 @@ route.post("/register", async (req, res) => {
   }
 });
 
+const loginSchema = Joi.object({
+  email: Joi.string().trim().lowercase().email().required(),
+  password: Joi.string().trim().min(8).required()
+});
+const login = require("../service/login");
+route.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  const { error, value } = loginSchema.validate({ email, password });
+  if (error) {
+    res.status(400).json({
+      status: 400,
+      error: error.details[0].message
+    });
+    return;
+  }
+  try {
+    const result = await login(value);
+    console.log(req.cookies)
+    res.cookie('token', result.token, {
+      maxAge: 15 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    }).json(result);
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      error: error.message
+    });
+  }
+});
+
 module.exports = route;
