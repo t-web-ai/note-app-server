@@ -66,4 +66,11 @@ route.post("/login", async (req, res) => {
   }
 });
 
+route.get("/logout", (req, res) => {
+  res.clearCookie("token").json({
+    status: 200,
+    message: "You are logged out"
+  });
+});
+
 module.exports = route;
