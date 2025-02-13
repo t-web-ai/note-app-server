@@ -19,6 +19,8 @@ const user = require("./router/user");
 app.use("/user", user);
 
 const note = require("./router/note");
+const token = require("./middleware/token");
+app.use("/note", token);
 app.use("/note", note);
 
 mongoose.connect(process.env.MONGODB)
