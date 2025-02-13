@@ -53,7 +53,6 @@ route.post("/login", async (req, res) => {
   }
   try {
     const result = await login(value);
-    console.log(req.cookies)
     res.cookie('token', result.token, {
       maxAge: 15 * 24 * 60 * 60 * 1000,
       httpOnly: true,
