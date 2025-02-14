@@ -42,4 +42,30 @@ route.get("/own/:page", async (req, res) => {
   }
 });
 
+const deleteSchema = Joi.object({
+  id: Joi.string().trim().required()
+});
+const deleteOwnNote = require("../service/deleteOwnNote");
+route.delete("/own/delete", async (req, res) => {
+  const { id } = req.body;
+  const { error, value } = deleteSchema.validate({ id });
+  if (error) {
+    res.status(400).json({
+      status: 400,
+      error: error.details[0].message
+    });
+    return;
+  }
+  try {
+    const result = await deleteOwnNote({ ...value, ...{ email: req.email } });
+    if (result.status == 405) {
+      res.status(405).json(result);
+      return;
+    }
+    res.status(204).end();
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 module.exports = route;
