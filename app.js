@@ -18,13 +18,13 @@ app.use(cookieParser());
 const user = require("./router/user");
 app.use("/user", user);
 
+const connection = require("./middleware/connection");
+app.use("/", connection);
+
 const note = require("./router/note");
 const token = require("./middleware/token");
 app.use("/note", token);
 app.use("/note", note);
-
-const connection = require("./middleware/connection");
-app.use("/", connection);
 
 mongoose.connect(process.env.MONGODB)
   .then(() => console.log("Connected to MongoDB..."))
