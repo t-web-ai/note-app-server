@@ -23,6 +23,9 @@ const token = require("./middleware/token");
 app.use("/note", token);
 app.use("/note", note);
 
+const connection = require("./middleware/connection");
+app.use("/", connection);
+
 mongoose.connect(process.env.MONGODB)
   .then(() => console.log("Connected to MongoDB..."))
   .catch(() => console.log("Failed to connect..."));
