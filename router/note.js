@@ -28,9 +28,9 @@ route.post("/add", async (req, res) => {
 });
 
 const getOwnNote = require("../service/getOwnNote");
-route.get("/own/:page", async (req, res) => {
+route.get("/own", async (req, res) => {
   const email = req.email;
-  const { page } = req.params;
+  const { page } = req.query;
   try {
     const result = await getOwnNote(email, page);
     res.send(result)
