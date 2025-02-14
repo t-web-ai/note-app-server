@@ -27,4 +27,19 @@ route.post("/add", async (req, res) => {
   }
 });
 
+const getOwnNote = require("../service/getOwnNote");
+route.get("/own/:page", async (req, res) => {
+  const email = req.email;
+  const { page } = req.params;
+  try {
+    const result = await getOwnNote(email, page);
+    res.send(result)
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      error: error.message
+    });
+  }
+});
+
 module.exports = route;

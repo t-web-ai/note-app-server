@@ -9,7 +9,7 @@ const service = async (value) => {
     });
     return await note.save();
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
