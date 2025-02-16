@@ -30,4 +30,19 @@ route.post("/share", async (req, res) => {
   }
 });
 
+const getShareNote = require("../service/getShareNote");
+route.get("/share", async (req, res) => {
+  const email = req.email;
+  const { page } = req.query;
+  try {
+    const result = await getShareNote({ ...{ email }, ...{ page } });
+    res.status(result.status).json(result);
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      error: error.message
+    });
+  }
+});
+
 module.exports = route;
