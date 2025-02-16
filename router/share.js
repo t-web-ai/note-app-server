@@ -45,4 +45,30 @@ route.get("/share", async (req, res) => {
   }
 });
 
+const updateShareNote = require("../service/updateShareNote");
+const updateSchema = Joi.object({
+  id: Joi.string().trim().required(),
+  text: Joi.string().trim().required()
+});
+route.put("/share/update", async (req, res) => {
+  const { id, text } = req.body;
+  const email = req.email;
+  const { error, value } = updateSchema.validate({ id, text });
+  if (error) {
+    res.status(400).json({
+      status: 400,
+      error: error.details[0].message
+    });
+  }
+  try {
+    const result = await updateShareNote({ ...value, ...{ email } });
+    res.status(result.status).json(result);
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      error: error.message
+    });
+  }
+});
+
 module.exports = route;
