@@ -71,4 +71,31 @@ route.put("/share/update", async (req, res) => {
   }
 });
 
+const removePermissionSchema = Joi.object({
+  id: Joi.string().trim().required(),
+  person: Joi.string().trim().lowercase().email().required()
+});
+const removeSharePermission = require("../service/removeSharePermission");
+route.put("/share/remove-permission", async (req, res) => {
+  const { id, person } = req.body;
+  const email = req.email;
+  const { error, value } = removePermissionSchema.validate({ id, person });
+  if (error) {
+    res.status(400).json({
+      status: 400,
+      error: error.details[0].message
+    });
+    return;
+  }
+  try {
+    const result = await removeSharePermission({ ...value, ...{ email } });
+    res.status(result.status).json(result);
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      error: error.message
+    });
+  }
+});
+
 module.exports = route;
