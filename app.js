@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 require("dotenv").config();
 
@@ -10,6 +11,9 @@ const PORT = process.env.PORT ?? 3000;
 const server = app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}...`);
 });
+
+const corsOption = require("./cors/corsOption");
+app.use(cors(corsOption));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
