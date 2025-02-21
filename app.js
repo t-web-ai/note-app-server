@@ -29,6 +29,13 @@ app.use("/note", note);
 const share = require("./router/share");
 app.use("/note", share);
 
+app.all("*", async (req, res) => {
+  res.status(404).json({
+    status: 404,
+    message: "Not found!"
+  });
+});
+
 mongoose.connect(process.env.MONGODB)
   .then(() => console.log("Connected to MongoDB..."))
   .catch(() => console.log("Failed to connect..."));
